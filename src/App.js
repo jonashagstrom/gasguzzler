@@ -58,12 +58,13 @@ class App extends Component {
       .add(this.state.form)
       .then(docRef => {
         console.log('Document written with ID: ', docRef.id);
+        const resetForm = Object.assign(this.state.form, {
+          litres: 0,
+          kilometers: 0,
+          totalMileage: 0
+        });
         this.setState({
-          form: {
-            litres: 0,
-            kilometers: 0,
-            totalMileage: 0
-          }
+          form: resetForm
         });
       })
       .catch(error => {
