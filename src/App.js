@@ -6,6 +6,7 @@ import './App.css';
 import './firebase_config.js';
 
 const db = firebase.firestore();
+const FILLUPS_COLLECTION = 'fillups';
 
 class App extends Component {
   constructor() {
@@ -38,6 +39,7 @@ class App extends Component {
           userId: user.uid
         });
         this.setState({ render: true, form: userId });
+        this.fetchData(user.uid);
       } else {
         this.setState({ render: false, error: 'Logged out' });
       }
@@ -54,7 +56,7 @@ class App extends Component {
   handleSubmit = e => {
     e.preventDefault();
     db
-      .collection('fillups')
+      .collection(FILLUPS_COLLECTION)
       .add(this.state.form)
       .then(docRef => {
         console.log('Document written with ID: ', docRef.id);
@@ -69,6 +71,22 @@ class App extends Component {
       })
       .catch(error => {
         console.error('Error adding document: ', error);
+      });
+  };
+
+  fetchData = userId => {
+    db
+      .collection(FILLUPS_COLLECTION)
+      .where('userId', '==', userId)
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          // doc.data() is never undefined for query doc snapshots
+          console.log(doc.id, ' => ', doc.data());
+        });
+      })
+      .catch(error => {
+        console.log('Error getting documents: ', error);
       });
   };
 
