@@ -1,3 +1,9 @@
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+
 .App {
   text-align: center;
 }
@@ -23,12 +29,16 @@
   font-size: large;
   max-width: 570px;
   margin: 0 auto;
-  padding: 48px 0;
+  padding: 48px 12px;
 }
 
 @keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 label {
@@ -38,7 +48,7 @@ label {
 }
 
 input {
-  width: 80%;
+  width: 100%;
   font-size: 100%;
   font-family: inherit;
   padding: 3px;
@@ -53,4 +63,13 @@ button {
   border-radius: 3px;
   font-size: 100%;
   font-family: inherit;
+}
+
+ol {
+  margin: 0;
+  padding: 0 0 0 18px;
+}
+
+li {
+  text-align: left;
 }

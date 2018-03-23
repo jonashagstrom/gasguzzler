@@ -20,7 +20,8 @@ class App extends Component {
         kilometers: 0,
         totalMileage: 0,
         userId: null
-      }
+      },
+      fillups: []
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -80,10 +81,13 @@ class App extends Component {
       .where('userId', '==', userId)
       .get()
       .then(querySnapshot => {
+        const fillups = [];
         querySnapshot.forEach(doc => {
           // doc.data() is never undefined for query doc snapshots
           console.log(doc.id, ' => ', doc.data());
+          fillups.push(doc.data());
         });
+        this.setState({ fillups });
       })
       .catch(error => {
         console.log('Error getting documents: ', error);
@@ -91,6 +95,8 @@ class App extends Component {
   };
 
   render() {
+    const { fillups } = this.state;
+
     return (
       this.state.render && (
         <div className="App">
@@ -136,6 +142,18 @@ class App extends Component {
                 </button>
               </p>
             </form>
+            <hr />
+            {fillups.length > 0 && (
+              <ol>
+                {fillups.map((fillup, idx) => (
+                  <li key={idx}>
+                    <p>Litres: {fillup.litres}</p>
+                    <p>Kilometers: {fillup.kilometers}</p>
+                    <p>Total mileage: {fillup.totalMileage}</p>
+                  </li>
+                ))}
+              </ol>
+            )}
           </div>
         </div>
       )
