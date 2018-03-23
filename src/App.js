@@ -8,27 +8,41 @@ import './firebase_config.js';
 const db = firebase.firestore();
 
 class App extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      render: false,
+      error: null,
+      form: {
+        litres: 0,
+        kilometers: 0,
+        totalMileage: 0,
+        userId: null
+      }
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
   componentWillMount() {
     firebase
       .auth()
       .signInAnonymously()
-      .then(() => {
-        this.setState({ render: true });
-      })
       .catch(error => {
-        this.setState({ render: false, error });
+        this.setState({ error });
       });
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        const userId = Object.assign(this.state.form, {
+          userId: user.uid
+        });
+        this.setState({ render: true, form: userId });
+      } else {
+        this.setState({ render: false, error: 'Logged out' });
+      }
+    });
   }
-
-  state = {
-    render: false,
-    error: null,
-    form: {
-      litres: 0,
-      kilometers: 0,
-      totalMileage: 0
-    }
-  };
 
   handleChange = e => {
     const update = Object.assign(this.state.form, {
