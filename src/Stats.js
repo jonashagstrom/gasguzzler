@@ -40,24 +40,42 @@ class Stats extends Component {
     return Math.round(litres / (kilometers / 10) * 100) / 100;
   };
 
+  totalConsumption = fillups => {
+    let totalKilometers = 0;
+    let totalLitres = 0;
+    fillups.map(fillup => {
+      const litres = Math.round(fillup.litres * 100) / 100;
+      const kilometers = Math.round(fillup.kilometers * 100) / 100;
+      totalKilometers += kilometers;
+      totalLitres += litres;
+    });
+
+    return this.consumption(totalLitres, totalKilometers);
+  };
+
   render() {
     const { fillups } = this.state;
 
     return (
       <div>
         {fillups.length > 0 && (
-          <ol>
-            {fillups.map((fillup, idx) => (
-              <li key={idx}>
-                <p>Litres: {fillup.litres}</p>
-                <p>Kilometers: {fillup.kilometers}</p>
-                <p>Total mileage: {fillup.totalMileage}</p>
-                <p>
-                  L/10km: {this.consumption(fillup.litres, fillup.kilometers)}
-                </p>
-              </li>
-            ))}
-          </ol>
+          <div>
+            <p>
+              <b>Total average consumption:</b> {this.totalConsumption(fillups)}
+            </p>
+            <ol>
+              {fillups.map((fillup, idx) => (
+                <li key={idx}>
+                  <p>Litres: {fillup.litres}</p>
+                  <p>Kilometers: {fillup.kilometers}</p>
+                  <p>Total mileage: {fillup.totalMileage}</p>
+                  <p>
+                    L/10km: {this.consumption(fillup.litres, fillup.kilometers)}
+                  </p>
+                </li>
+              ))}
+            </ol>
+          </div>
         )}
       </div>
     );
