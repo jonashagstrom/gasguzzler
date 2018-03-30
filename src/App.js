@@ -5,7 +5,6 @@ import * as firebase from 'firebase';
 import '@firebase/firestore';
 import Stats from './Stats';
 import Entry from './Entry';
-import logo from './gasguzzler.png';
 import './App.css';
 import './firebase_config.js';
 
@@ -47,7 +46,7 @@ class App extends Component {
         <Router>
           <div className="container">
             <header className="App-header">
-              <img className="logo" src={logo} alt="GasGuzzler" />
+              <h1>GasGuzzler</h1>
             </header>
             <nav>
               <ul>
