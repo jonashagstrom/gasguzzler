@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as firebase from 'firebase';
+import { FILLUPS_COLLECTION } from './utils/constants';
 import '@firebase/firestore';
 import './App.css';
 import './firebase_config.js';
 
 const db = firebase.firestore();
-const FILLUPS_COLLECTION = 'fillups';
 
 class Stats extends Component {
   constructor() {

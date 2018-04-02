@@ -1,23 +1,24 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as firebase from 'firebase';
+import { FILLUPS_COLLECTION } from './utils/constants';
+import { totalMileage } from './utils/totalMileage';
 import '@firebase/firestore';
 import './App.css';
 import './firebase_config.js';
 
 const db = firebase.firestore();
-const FILLUPS_COLLECTION = 'fillups';
 
 class Entry extends Component {
   constructor(props, context) {
     super();
-
+    this.totalMileage = this.totalMileage.bind(this);
     this.state = {
       error: null,
       form: {
-        litres: 0,
-        kilometers: 0,
-        totalMileage: 0,
+        litres: '',
+        kilometers: '',
+        totalMileage: '',
         userId: context.userId,
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
       }
@@ -25,6 +26,8 @@ class Entry extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
+  totalMileage = () => totalMileage(db, this.context.userId);
 
   handleChange = e => {
     const update = Object.assign(this.state.form, {
@@ -41,9 +44,9 @@ class Entry extends Component {
       .then(docRef => {
         console.log('Document written with ID: ', docRef.id);
         const resetForm = Object.assign(this.state.form, {
-          litres: 0,
-          kilometers: 0,
-          totalMileage: 0
+          litres: '',
+          kilometers: '',
+          totalMileage: ''
         });
         this.setState({
           form: resetForm
@@ -55,6 +58,7 @@ class Entry extends Component {
   };
 
   render() {
+    this.totalMileage();
     return (
       <div>
         <form>
